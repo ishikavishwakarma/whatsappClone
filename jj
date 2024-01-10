@@ -1,0 +1,920 @@
+ <div class="current-user">
+               <h3>hii</h3>
+              </div>
+              <div class="distance-user">
+                <h3>hloo</h3>
+              </div>
+
+
+              var userId= $(this).attr('data-id');
+              receiver_id = userId;
+           console.log(receiver_id)
+
+           
+           $(document).ready(function(){
+            $('.chatbox').click(function(){
+              var recId= $(this).attr('data-id');
+              receiver_id = recId;
+             
+              alert(receiver_id)
+            })
+           
+          })
+
+
+          <% if(founduser.length >0){ for(let i=0; i founduser.length; i++ ){ %>
+
+            <a style="text-decoration: none" href="/chat">
+              <div data-id="<%= user._id %>" class="chatbox">
+                <img src="/images/uploads/<%= founduser[i]['image'] %>" alt="" />
+                <h3><%= founduser[i]['username'] %></h3>
+                <%  if(founduser[i]['is_online'] == 1){ %>
+                    <h5 class="online" style="color: green;" id="<%= founduser[i]['_id'] %>-status">online</h5>
+                  <% }else{ %>
+                    <h5 class="offline"  style="color: white;"id="<%= founduser[i]['_id'] %>-status">offline</h5>
+            <% } %>
+              </div>
+            </a>
+            <% }} %>
+            
+
+           //update user online status
+           socket.on('getOnlineUser',function(data){
+             $('#'+data.user_id+'-status').text(Online)
+             $('#'+data.user_id+'-status').removeClass('offline')
+             $('#'+data.user_id+'-status').addClass('online')
+           })
+           //update user offline status
+           socket.on('getOfflineUser',function(data){
+             $('#'+data.user_id+'-status').text(Offline)
+             $('#'+data.user_id+'-status').addClass('offline')
+             $('#'+data.user_id+'-status').removeClass('online')
+           })
+
+
+
+
+           <% founduser.forEach(function(user){ %>
+            <a style="text-decoration: none" href="/chat">
+              <div data-id="<%= user._id %>" class="chatbox">
+                <img src="/images/uploads/<%= user.image %>" alt="" />
+                <h3><%= user.username %></h3>
+                <%  if(user.is_online == 1){ %>
+                    <h5 class="online" style="color: green;" id="<%= user._id %>-status">online</h5>
+                  <% }else{ %>
+                    <h5 class="offline"  style="color: white;"id="<%= user._id %>-status">offline</h5>
+            <% } %>
+              </div>
+            </a>
+            <% }) %>
+
+
+            userModel
+            .find({ username: { $nin:[req.session.passport.user]} })
+           
+            .then(function (founduser) {
+              console.log(founduser);
+              res.render("index", { onlyuser:req.session.user,founduser });
+            });    
+
+
+
+
+
+
+
+
+                
+      //update user online status
+      socket.on('getOnlineUser',function(data){
+        $('#'+data.user_id+'-status').text(Online)
+        $('#'+data.user_id+'-status').removeClass('offline')
+        $('#'+data.user_id+'-status').addClass('online')
+      })
+      //update user offline status
+      socket.on('getOfflineUser',function(data){
+        $('#'+data.user_id+'-status').text(Offline)
+        $('#'+data.user_id+'-status').addClass('offline')
+        $('#'+data.user_id+'-status').removeClass('online')
+      })
+
+         $('#chat-form').submit(function(e) {
+          e.preventDefault();
+          var message = $('#message').val()
+          $.ajax({
+            url:'/save-chat',
+            type:'POST',
+            data:{
+              message:message,
+              sender_id:sender_id,
+              receiver_id:receiver_id},
+              success:function(response){
+                if(response.success){
+                  console.log(response)
+                  $('#message').val("");
+                  let Chat = response.data.message;
+                  let html =`
+                  <div class="current-user">
+                    <h3>`+Chat+`</h3>
+                   </div>
+                  `;
+                  $('.chat-con').append(html);
+                  socket.emit('newChats',response.data)
+                }else{
+                  alert(data.msg)
+                }
+              }
+            })
+
+         });
+
+         socket.on('loadChats',function(data){
+          let html =`
+                  <div class="distance-user">
+                    <h3>`+data.message+`</h3>
+                   </div>
+                  `;
+                  $('.chat-con').append(html);
+         })
+
+         userModel
+         .find({ username: { $nin:[req.session.passport.user]} })
+        
+         .then(function (founduser) {
+           console.log(founduser);
+           res.render("index", { onlyuser:req.session.user,founduser });
+         });
+
+         /images/uploads/<%= onlyuser.image %>
+         /images/uploads/<%= onlyuser.image %>
+
+         // userModel.findOne({ username: req.session.passport.user })
+  //   .then(function (founduser) {
+  //     fs.unlinkSync(`./public/images/uploads/${founduser.stories}`)
+  //     storyModel.create({
+  //       userid: founduser._id,
+  //       images: req.body.imageOrVideo
+  //     })
+  //       .then(function (createdpost) {
+  //         founduser.stories.push(createdpost._id)
+  //         console.log(createdpost._id)
+  //         founduser.save()
+  //           .then(function () {
+  //             console.log("uploaded")
+  //           })
+  //       })
+  //   });
+
+
+
+
+
+
+
+
+
+
+
+  $(document).ready(function(){
+    $('.chatbox').click(function(){
+   var userId= $(this).attr('id');
+   receiver_id =userId;
+   console.log(receiver_id)
+    })
+  })
+
+
+
+
+
+
+
+
+
+    
+  var socket = io('/name',{
+    auth:{
+      token:'<%= onlyuser._id %>'
+    }
+  });
+
+                 
+  //update user online status
+  socket.on('getOnlineUser',function(data){
+    $('#'+data.founduser_id+'-status').text(online)
+    $('#'+data.founduser_id+'-status').removeClass('offline')
+    $('#'+data.founduser_id+'-status').addClass('online')
+  })
+  //update user offline status
+  socket.on('getOfflineUser',function(data){
+    $('#'+data.founduser_id+'-status').text(offline)
+    $('#'+data.founduser_id+'-status').addClass('offline')
+    $('#'+data.founduser_id+'-status').removeClass('online')
+  })
+
+     $('#chat-form').submit(function(e) {
+      e.preventDefault();
+      var message = $('#message').val()
+      $.ajax({
+        url:'/save-chat',
+        type:'POST',
+        data:{
+          message:message,
+          sender_id:sender_id,
+          receiver_id:receiver_id},
+          success:function(response){
+            if(response.success){
+              console.log(response)
+              $('#message').val("");
+              let Chat = response.data.message;
+              let html =`
+              <div class="current-user">
+                <h3>`+Chat+`</h3>
+               </div>
+              `;
+              $('.chat-con').append(html);
+              socket.emit('newChats',response.data)
+            }else{
+              alert(data.msg)
+            }
+          }
+        })
+
+     });
+
+     socket.on('loadChats',function(data){
+      let html =`
+              <div class="distance-user">
+                <h3>`+data.message+`</h3>
+               </div>
+              `;
+              $('.chat-con').append(html);
+     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     socket.on('loadChats',function(data){
+      if(sender_id == data.receiver_id && receiver_id == data.sender_id){
+        let html =`
+        <div class="distance-user">
+          <h3>`+data.message+`</h3>
+         </div> `;
+        $('.chat-con').append(html);
+      }
+      scrollchat()
+     })
+  
+     socket.on('load',function(data){
+      $(".chat-con").html(' ');
+   var chats = data.chats;
+   let html = ' ';
+   for(let x = 0; x < chats.length; x++){
+    let addClass = '';
+      if(chats[x]['sender_id'] == sender_id){
+        addClass = 'current-user';
+      }
+      else{
+        addClass = 'distance-user';
+      }
+      html +=` 	<div class='`+addClass+`'>
+        <h5>`+chats[x]['message']+`</h5> </div>`;
+   }
+   $(".chat-con").append(html);
+   scrollchat()
+     })
+   }
+  function scrollchat(){
+    $(".chat-con").animate({
+      scrollTop:$('.chat-con').offset().top + $('.chat-con')[0].scrollHeight
+    },0);
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>WhatsApp</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+        rel="stylesheet"
+      />
+      <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+      <div class="main">
+        <div class="pg">
+          <div class="left">
+            <div class="nav">
+              <a href="/profile"> <div class="gola"> <img src="" alt=""></div> </a>
+  
+              <div class="nav3">
+                <a href="/story"> <i  class="ri-refresh-line"></i></a>  
+                <a href="/logout">LogOut</a>
+              </div>
+            </div>
+            <div class="ser">
+              <input type="text" placeholder="Search" />
+            </div>
+            <% founduser.forEach(function(user){ %>
+    <a class="ach"  style="text-decoration: none;" href="/chat"> 
+       <div id="<%= user._id %>"  class="chatbox">
+      <img src="/images/uploads/<%= user.image %>" alt="">
+  
+        <h3   ><%= user.username %></h3>
+        <%  if(user.is_online == 1){ %>
+            <h5 class="online" style="color: green;" id="<%= user._id %>-status">online</h5>
+          <% }else{ %>
+            <h5 class="offline"style="color: white;" id="<%= user._id %>-status">offline</h5>
+    
+            <% } %>
+  
+    </div> </a>
+    <% }) %>
+          </div>
+          <div class="right">
+            <div class="right1">
+              <div class="chat">
+                <img src="" alt="" />
+                <h3></h3>
+              </div>
+              <div class="chat-con">
+               
+              </div> 
+              <form action=""  id="chat-form">
+                  <textarea type="text" name="message" placeholder="Enter Message" id="message" required cols="30" rows="10"></textarea>
+                  <input type="submit" value="Send">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+    <script src="/socket.io/socket.io.js"></script>
+  
+  
+    <script src="/javascripts/script.js"></script>
+    </body>
+  
+    
+  
+  
+  </html>
+  
+
+  /images/uploads/<%= onlyuser.image %>
+
+  <script>
+
+    var sender_id = '<%= onlyuser._id %>';
+    var receiver_id = "";
+   var hlee =  document.querySelectorAll(".ach")
+   var head = document.querySelector('.right1 .chat h3')
+   var img = document.querySelector('.right1 .chat img')
+    hlee.forEach(function(item){
+     item.addEventListener("click",function(e){
+     e.preventDefault()
+         head.innerHTML=e.target.textContent
+      receiver_id=e.target.id;
+      socket.emit('existsChat', { sender_id:sender_id, receiver_id:receiver_id });
+
+      abcd();
+      
+    })
+    })
+    var socket = io('/name',{
+      auth:{
+        token:'<%= onlyuser._id %>'
+      }
+    });
+
+     //update user online status
+  socket.on('getOnlineUser',function(data){
+    console.log('heyy',data)
+    $('#'+data.founduser_id+'-status').text(online)
+    $('#'+data.founduser_id+'-status').removeClass('offline')
+    $('#'+data.founduser_id+'-status').addClass('online')
+  })
+  //update user offline status
+  socket.on('getOfflineUser',function(data){
+    $('#'+data.founduser_id+'-status').text(offline)
+    $('#'+data.founduser_id+'-status').addClass('offline')
+    $('#'+data.founduser_id+'-status').removeClass('online')
+  })
+
+ function abcd(){
+   console.log(receiver_id);
+   Array.from(document.querySelectorAll('#chat-form')).forEach(e => e.addEventListener("submit", function(e) {
+    e.preventDefault();
+    var message = $('#message').val()
+    $.ajax({
+      url:'/save-chat',
+      type:'POST',
+      data:{
+        message:message,
+        sender_id:sender_id,
+        receiver_id:receiver_id},
+        success:function(response){
+          if(response.success){
+            console.log(response)
+            $('#message').val("");
+            let Chat = response.data.message;
+            let html =`
+            <div class="current-user">
+              <h3>`+Chat+`</h3>
+             </div>
+            `;
+            $('.chat-con').append(html);
+            socket.emit('newChats',response.data)
+            scrollchat()
+          }else{
+            alert(data.msg)
+          }
+        }
+      })
+
+   }))
+   socket.on('loadChats',function(data){
+    if(sender_id == data.receiver_id && receiver_id == data.sender_id){
+      let html =`
+      <div class="distance-user">
+        <h3>`+data.message+`</h3>
+       </div> `;
+      $('.chat-con').append(html);
+    }
+    scrollchat()
+   })
+
+   socket.on('load',function(data){
+    $(".chat-con").html(' ');
+ var chats = data.chats;
+ let html = ' ';
+ for(let x = 0; x < chats.length; x++){
+  let addClass = '';
+		if(chats[x]['sender_id'] == sender_id){
+			addClass = 'current-user';
+		}
+		else{
+			addClass = 'distance-user';
+		}
+    html +=` 	<div class='`+addClass+`'>
+			<h5>`+chats[x]['message']+`</h5> </div>`;
+ }
+ $(".chat-con").append(html);
+ scrollchat()
+   })
+ }
+function scrollchat(){
+  $(".chat-con").animate({
+		scrollTop:$('.chat-con').offset().top + $('.chat-con')[0].scrollHeight
+	},0);
+}
+
+ 
+  </script>
+
+
+
+
+
+
+
+
+
+  router.get("/chat/:username",isLoggedIn, function (req, res) {
+  
+    userModel
+      .findOne({ username: req.params.username})
+      .then(function (founduser) {
+        userModel
+      .find({ username: { $nin:[req.session.passport.user]} })
+      .then(function (foundusers) {
+        console.log(foundusers);
+        res.render("chat", {founduser,foundusers,onlyuser:req.user});
+      })
+       
+          });
+        
+      });
+
+       html +=` 	<div class='`+addClass+`'>;
+    <h5>`;
+    
+      html +=`</h5> </div>`;
+
+
+
+
+
+
+
+
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="main">
+    <div class="pg">
+<div class="left">
+    <div style="height: 8vw;" class="nav">
+      <form id="uploadpic" accept="video/*" method="post" action="/post" enctype="multipart/form-data">
+        <input id="fileinp" type="file" name="imageOrVideo">
+      </form>
+        <div class="nav1">
+           <a style="text-decoration:none;" href="/"><i  class="ri-arrow-left-line"></i></a> 
+            <h2>Status</h2>
+        </div>
+
+          
+    
+      </div>
+      
+        <div  class="boxe1">
+          <div class="circle">
+        <img src="/images/uploads/<%= onlyuser.image %>" alt="">
+       </div>
+     <div class="hh">
+       <h3>My Status</h3>
+       <h5>Add to my status</h5>
+     </div>
+   
+     </div> 
+</div>
+      <div class="right">
+        <img src="/images/gpgUENjXYbNQRKZciejivU-removebg-preview.png" alt="">
+        <h1>Download WhatsApp For Windows</h1>
+        <p>Make calls, share your screen and get a faster experience when you download the <br> Windows app</p>
+        <button style="background-color: #00A884; border:none; width:8vw;">Get app</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelector(".boxe1")
+    .addEventListener("click",function(){
+      document.querySelector("#fileinp").click();
+    });
+    document.querySelector("#fileinp")
+    .addEventListener("change", function () {
+      document.querySelector("#uploadpic").submit();
+    })
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram</title>
+    <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        font-family: gilroy;
+        width: 100%;
+        scroll-behavior: smooth;
+      }
+      :root {
+        font-size: 62.5%;
+      }
+      #storiesparent {
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        gap: 6vh;
+        padding: 4vh;
+        height: 100vh;
+        width: 100%;
+        background-color: #1a1a1a;
+      }
+      #storiesparentnav {
+        z-index: 99999;
+        top: 0;
+        position: absolute;
+        display: flex;
+        width: 96%;
+        height: 5vh;
+
+        align-items: center;
+        justify-content: space-between;
+      }
+      #storiesparentnav a {
+        text-decoration: none;
+      }
+      #storiesparentnav i {
+        font-size: 2.5vw;
+        color: white;
+      }
+      #storieschild,
+      #storieschild2 {
+        flex-shrink: 0;
+        position: relative;
+        /* overflow: hidden; */
+        width: 50vh;
+        background: linear-gradient(#f9ce34, #ee2a7b, #6228d7);
+        height: 90vh;
+        color: white;
+      }
+      #storieschildnav {
+        z-index: 99;
+        height: 8vh;
+        width: 100%;
+        padding: 2vh 3vh;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        gap: 1vh;
+      }
+
+      #storieschildnavbar,
+      #bar-2 {
+        height: 4px;
+        transition: all linear 2s;
+        position: absolute;
+        top: 1vh;
+        left: 1vh;
+        background-color: #ffffff;
+        z-index: 999999;
+        width: 0%;
+      }
+      #storieschilddetails {
+        height: 5vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2vh;
+      }
+      #storieschilddetails img {
+        height: 5vh;
+        width: 5vh;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      #storieschilddetails h2 {
+        font-size: 1.5vw;
+        font-weight: 400;
+      }
+      #storydetails,
+      #storydetails2 {
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
+
+      #storydetails img,
+      #storydetails2 img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+      #storydetails video,
+      #storydetails2 video {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+      #storydetails h2,
+      #storydetails2 h2 {
+        top: 0;
+        font-size: 2vw;
+        font-weight: 400;
+        padding: 3vh;
+        color: white;
+        margin-top: 13%;
+        position: absolute;
+        z-index: 999;
+      }
+      #mainstoryparent {
+        height: 100vh;
+        position: relative;
+        display: flex;
+        overflow: hidden;
+        color: white;
+        width: 50vh;
+      }
+      .swiper {
+        width: 100%;
+        background-color: #1a1a1a;
+        height: 90%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .swiper-slide video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .swiper-button-next {
+        transform: translate(-25vw, 0);
+        color: white;
+      }
+      .swiper-button-prev {
+        transform: translate(25vw, 0);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="storiesparent">
+      <div id="storiesparentnav">
+        <svg
+          aria-label="Instagram"
+          class="x1lliihq x1n2onr6"
+          color="rgb(245, 245, 245)"
+          fill="rgb(245, 245, 245)"
+          height="24"
+          role="img"
+          viewBox="0 0 24 24"
+          width="24"
+          style="margin-right: 3vw"
+        >
+          <title>Instagram</title>
+          <path
+            d="M12 2.982c2.937 0 3.285.011 4.445.064a6.087 6.087 0 0 1 2.042.379 3.408 3.408 0 0 1 1.265.823 3.408 3.408 0 0 1 .823 1.265 6.087 6.087 0 0 1 .379 2.042c.053 1.16.064 1.508.064 4.445s-.011 3.285-.064 4.445a6.087 6.087 0 0 1-.379 2.042 3.643 3.643 0 0 1-2.088 2.088 6.087 6.087 0 0 1-2.042.379c-1.16.053-1.508.064-4.445.064s-3.285-.011-4.445-.064a6.087 6.087 0 0 1-2.043-.379 3.408 3.408 0 0 1-1.264-.823 3.408 3.408 0 0 1-.823-1.265 6.087 6.087 0 0 1-.379-2.042c-.053-1.16-.064-1.508-.064-4.445s.011-3.285.064-4.445a6.087 6.087 0 0 1 .379-2.042 3.408 3.408 0 0 1 .823-1.265 3.408 3.408 0 0 1 1.265-.823 6.087 6.087 0 0 1 2.042-.379c1.16-.053 1.508-.064 4.445-.064M12 1c-2.987 0-3.362.013-4.535.066a8.074 8.074 0 0 0-2.67.511 5.392 5.392 0 0 0-1.949 1.27 5.392 5.392 0 0 0-1.269 1.948 8.074 8.074 0 0 0-.51 2.67C1.012 8.638 1 9.013 1 12s.013 3.362.066 4.535a8.074 8.074 0 0 0 .511 2.67 5.392 5.392 0 0 0 1.27 1.949 5.392 5.392 0 0 0 1.948 1.269 8.074 8.074 0 0 0 2.67.51C8.638 22.988 9.013 23 12 23s3.362-.013 4.535-.066a8.074 8.074 0 0 0 2.67-.511 5.625 5.625 0 0 0 3.218-3.218 8.074 8.074 0 0 0 .51-2.67C22.988 15.362 23 14.987 23 12s-.013-3.362-.066-4.535a8.074 8.074 0 0 0-.511-2.67 5.392 5.392 0 0 0-1.27-1.949 5.392 5.392 0 0 0-1.948-1.269 8.074 8.074 0 0 0-2.67-.51C15.362 1.012 14.987 1 12 1Zm0 5.351A5.649 5.649 0 1 0 17.649 12 5.649 5.649 0 0 0 12 6.351Zm0 9.316A3.667 3.667 0 1 1 15.667 12 3.667 3.667 0 0 1 12 15.667Zm5.872-10.859a1.32 1.32 0 1 0 1.32 1.32 1.32 1.32 0 0 0-1.32-1.32Z"
+          ></path>
+        </svg>
+        <a href="/home"><i class="ri-close-line"></i></a>
+      </div>
+      <div id="mainstoryparent">
+        <div id="storieschildnav">
+          <div id="storieschilddetails">
+            <div id="storieschildnavbar"></div>
+            <img src="../images/uploads/<%= user.image %> " alt="" />
+            <h2><%= user.username %></h2>
+          </div>
+        </div>
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <% userstory.forEach(function(story){ %>
+            <div class="swiper-slide">
+              <div id="storieschild">
+                <% if (story.storyimage) { %>
+                <div id="storydetails">
+                  <% const fileExtension =
+                  story.storyimage.split('.').pop().toLowerCase(); %> <% if
+                  (fileExtension === 'mp4' || fileExtension === 'mkv') { %>
+                  <video
+                    src="../images/uploads/<%= story.storyimage %>"
+                    autoplay
+                    muted
+                  ></video>
+                  <% } else { %>
+                  <img
+                    src="../images/allposts/<%= story.storyimage %>"
+                    alt=""
+                  />
+                  <% } %>
+                  <h2><%= story.data %></h2>
+                </div>
+                <% } else { %>
+                <div id="storydetails">
+                  <h2><%= story.data %></h2>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <%})%>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+      integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+
+
+      var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 0,
+        centeredSlides: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        on: {
+          slideChangeTransitionEnd: function () {
+            var currentSlide = swiper.slides[swiper.activeIndex];
+
+            // Check if the current slide contains a video
+            var videoElement = currentSlide.querySelector("video");
+
+            if (videoElement) {
+              // Pause the Swiper autoplay when video starts playing
+              swiper.autoplay.stop();
+
+              // Play the video
+              videoElement.play();
+
+              // Listen for the video to end
+              videoElement.addEventListener("ended", function () {
+                // Resume Swiper autoplay once the video is completed
+                swiper.autoplay.start();
+
+                // Check if it is the last slide
+                if (swiper.isEnd) {
+                  setTimeout(function () {
+                    document.querySelector(".ri-close-line").click();
+                  }, 2600); // 1000 milliseconds = 1 second
+                }
+              });
+            } else {
+              // If there is no video, check if it is the last slide
+              if (swiper.isEnd) {
+                setTimeout(function () {
+                  document.querySelector(".ri-close-line").click();
+                }, 2600); // 1000 milliseconds = 1 second
+              }
+            }
+
+            var widthPercentage =
+              (swiper.activeIndex / (swiper.slides.length - 1)) * 100;
+            var navbar = document.getElementById("storieschildnavbar");
+            navbar.style.width = widthPercentage + "%";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

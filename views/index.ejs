@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp</title>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css'>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="main">
+    <div class="pg">
+<div class="left">
+  <div class="nav">
+    
+    <a href="/profile"> <div class="gola"> <img src="/images/uploads/<%= onlyuser.image %>" alt=""></div> </a>
+
+   <div class="nav3">
+    <a href="/group"><i class="ri-group-fill"></i></a>
+   <a href="/status"> <i  class="ri-refresh-line"></i></a>
+   <a href="/logout">LogOut</a>
+   </div>
+  </div>
+  <div class="ser">
+    <input id="inpu" type="text" placeholder="Search">
+  </div>
+
+ 
+  <% founduser.forEach(function(user){ %>
+  <a class="ach" style="text-decoration: none;" href="/chat/<%= user.username %>"> 
+     <div  class="chatbox ">
+    <img src="/images/uploads/<%= user.image %>" alt="">
+
+      <h3 id="<%= user._id %>"><%= user.username %></h3>
+      <%  if(user.is_online == 1){ %>
+          <h5 class="online" style="color: green;" id="<%= user._id %>-status">online</h5>
+        <% }else{ %>
+          <h5 class="offline"style="color: white;" id="<%= user._id %>-status">offline</h5>
+  
+          <% } %>
+
+  </div> </a>
+  <% }) %>
+</div>
+      <div class="right">
+        <img src="/images/gpgUENjXYbNQRKZciejivU-removebg-preview.png" alt="">
+        <h1>Download WhatsApp For Windows</h1>
+        <p>Make calls, share your screen and get a faster experience when you download the <br> Windows app</p>
+        <button style="background-color: #00A884; border:none; width:8vw;">Get app</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.4/axios.min.js" integrity="sha512-ANd7ZJmixP2T0hxOP4bS6hkci01fxyrQSyRdaY7IsWq1WlKsD0WwWBDVDZbnMR7CJZVKCTkDx/q5D5n2C2C+vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascripts/script.js"></script>
+  <script>
+    const inp = document.querySelector("#inpu");
+    let clutter = "";
+    inp.addEventListener("input",async()=>{
+  axios.get(`/username/${ inp.value}`)
+  .then(function(data){
+    data.data.forEach(function(elem){
+      clutter+=`  <a class="ach" style="text-decoration: none;" href="/chat/${elem.username}"> 
+        <div  class="chatbox ">
+       <img src="/images/uploads/${elem.image}" alt="">
+   
+         <h3 id="${elem.id}">${elem.username}</h3>
+      
+     </div> </a>`
+  })
+})
+document.querySelector(".chatbox").innerHTML =clutter;
+  })
+   
+    var sender_id = '<%= onlyuser._id %>';
+    
+    
+    var receiver_id ="";   
+  
+    var socket = io('/name',{
+      auth:{
+        token:'<%= onlyuser._id %>'
+      }
+    });
+         //update user online status
+  socket.on('getOnlineUser',function(data){
+    console.log('heyy',data)
+    $('#'+data.founduser_id+'-status').text(online)
+    $('#'+data.founduser_id+'-status').removeClass('offline')
+    $('#'+data.founduser_id+'-status').addClass('online')
+  })
+  //update user offline status
+  socket.on('getOfflineUser',function(data){
+    $('#'+data.founduser_id+'-status').text(offline)
+    $('#'+data.founduser_id+'-status').addClass('offline')
+    $('#'+data.founduser_id+'-status').removeClass('online')
+  })
+      
+  </script>
+  <script src='https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js'></script>
+</body>
+
+</html>

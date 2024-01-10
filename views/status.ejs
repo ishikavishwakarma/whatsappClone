@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="main">
+    <div class="pg">
+<div class="left">
+   <div class="storydiv">
+    <div class="creatediv">
+      <div class="create">
+        <h2>Upload Status ----</h2>
+        <i id="upload" class="ri-gallery-fill"></i>
+      </div>
+      <div id="imagepreview"></div>
+      <div class="dataimage">
+        <form id="uploadstatus"  method="post" action="/post" enctype="multipart/form-data">
+          <input id="fileinp" type="file" name="imageOrVideo">
+          <textarea name="storydata" id="datatype" cols="60" rows="2" placeholder="type here"></textarea>
+        </form>
+        <i id="done" class="ri-arrow-right-s-line"></i>
+      </div>
+    </div>
+   </div>
+    <div style="height: 8vw;" class="nav">
+    
+        <div class="nav1">
+           <a style="text-decoration:none;" href="/"><i  class="ri-arrow-left-line"></i></a> 
+            <h2>Status</h2>
+        </div>
+      </div>
+      
+      <div  class="boxe1">
+        <div class="circle">
+      <img src="/images/uploads/<%= onlyuser.image %>" alt="">
+     </div>
+   <div class="hh">
+     <h3>My Status</h3>
+     <h5>Add to my status</h5>
+   </div>
+   </div> 
+   <hr style=" margin:.5vw 0vw; border-color: rgba(255, 255, 255, 0.186); ">
+
+   <%
+   const storyobject = {};
+   allstories.reverse().forEach(function(story){
+    if(!storyobject[story.userid._id]){
+      %> 
+      <a href="/stories/<%= story.userid._id%>">
+        <div id="storywala">
+          <div class="circle1">
+            <img src="../images/uploads/<%= story.userid.image%>" alt="">
+          </div>
+          <div class="hh">
+            <h3><%= story.userid.username%></h3>
+          </div>
+        </div>
+      </a>
+      <%
+      storyobject[story.userid._id]= true
+    }
+   })
+   %>
+     
+</div>
+      <div class="right">
+        <img src="/images/gpgUENjXYbNQRKZciejivU-removebg-preview.png" alt="">
+        <h1>Download WhatsApp For Windows</h1>
+        <p>Make calls, share your screen and get a faster experience when you download the <br> Windows app</p>
+        <button style="background-color: #00A884; border:none; width:8vw;">Get app</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    var flag = 0
+    document.querySelector(".boxe1")
+    .addEventListener("click",function(){
+      if(flag == 0){
+        document.querySelector(".storydiv").style.display = "grid";
+        flag=1
+    }else{
+        flag=0
+        document.querySelector(".storydiv").style.display = "none";
+    }
+    });
+    document.querySelector("#upload")
+    .addEventListener("click",function(){
+      document.querySelector("#fileinp").click();
+    });
+    document.querySelector("#done")
+    .addEventListener("click", function () {
+      document.querySelector("#uploadstatus").submit();
+    })
+
+
+    document.addEventListener("DOMContentLoaded",()=>{
+      const fileinp = document.getElementById("fileinp")
+      const imagepreview = document.getElementById("imagepreview")
+
+      fileinp.addEventListener("change",(event)=>{
+        const file = event.target.files[0];
+        if(file){
+          const reader = new FileReader();
+          reader.onload =()=>{
+            if(file.type.startsWith("video/")){
+              const video = document.createElement("video");
+              video.src = reader.result;
+              video.controls=true;
+              video.style.width = "100%";
+              video.style.height = "100%";
+            /*  video.width="100%"
+              video.height="100%"*/
+              imagepreview.innerHTML="";
+              imagepreview.appendChild(video);
+            }else{
+              const img = new Image();
+              img.src = reader.result;
+             img.style.width = "100%";
+             img.style.height = "100%";
+              imagepreview.innerHTML="";
+              imagepreview.appendChild(img);
+            }
+          }
+          reader.readAsDataURL(file);
+        }
+        else{
+          imagepreview.innerHTML="";
+        }
+      })
+    })
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    .form__group {
+        position: relative;
+        padding: 20px 0 0;
+        margin-top: 10px;
+        width: 99%;
+      }
+      .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: #fff;
+        padding: 1px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+      }
+      .form__field::placeholder {
+        color: transparent;
+      }
+      .form__field:placeholder-shown ~ .form__label {
+        font-size: 1.1rem;
+        cursor: text;
+        top: 20px;
+      }
+      .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        width: 10vw;
+        color: #9b9b9b;
+      }
+      .form__field:focus {
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+     
+        border-image: linear-gradient(to right, #11998e, #38ef7d);
+        border-image-slice: 1;
+      }
+      .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #11998e;
+        font-weight: 700;
+      }
+      /* reset input */
+      .form__field:required, .form__field:invalid {
+        box-shadow: none;
+      }
+      /* demo */
+      body {
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-size: 1.5rem;
+        background-color: #222222;
+      }
+      
+</style>
+<body>
+  <div class="main">
+    
+    <div class="pg">
+<div class="left">
+  <div style="height: 8vw;" class="nav">
+  
+    <div class="nav1">
+       <a style="text-decoration:none;" href="/group"><i  class="ri-arrow-left-line"></i></a> 
+        <h2>New Chat</h2>
+       
+    </div>
+  
+  </div>
+
+  <div class="nav4">
+    <div class="gimg">
+        <img src="/images/uploads/userimg.jpeg" alt="">
+    </div>
+    <form class="form2" action="/group"  method="post">
+        <div class="form__group field">
+            <input type="text" class="form__field" placeholder="Enter Group Name" name="groupName" id='name' required />
+            <label for="groupName" class="form__label">Enter Group Name </label>
+        </div>
+        <div class="form__group field">
+
+            <input type="number" class="form__field" name="limit"  min="1"placeholder="Enter limit"  id='name' required />
+            <label for="limit" class="form__label">Enter limit</label>
+        </div>
+        <!-- <input type="text"  name="groupName" placeholder="Enter Group Name"  >
+        <input type="number" name="limit"  min="1"placeholder="Enter limit"> -->
+        <button type="submit"><i class="ri-arrow-right-line"></i></button>
+    </form>
+    
+      
+   
+</div>
+</div>
+      <div class="right">
+        <img src="/images/gpgUENjXYbNQRKZciejivU-removebg-preview.png" alt="">
+        <h1>Download WhatsApp For Windows</h1>
+        <p>Make calls, share your screen and get a faster experience when you download the <br> Windows app</p>
+        <button style="background-color: #00A884; border:none; width:8vw;">Get app</button>
+      </div>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var flag = 0
+    document.querySelector(".chatbox2")
+    .addEventListener("click",function(){
+  console.log("helloo")
+  if(flag == 0){
+    document.querySelector(".form2").style.display="flex";
+    flag=1
+}else{
+    flag=0
+    document.querySelector(".form2").style.display="none";
+}
+ 
+    });
+  </script>
+   
+</body>
+
+
+</html>

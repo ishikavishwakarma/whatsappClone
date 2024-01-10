@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp</title>
+    <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        font-family: gilroy;
+        width: 100%;
+        scroll-behavior: smooth;
+      }
+      :root {
+        font-size: 62.5%;
+      }
+      #storiesparent {
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        gap: 6vh;
+        padding: 4vh;
+        height: 100vh;
+        width: 100%;
+        background-color: #1a1a1a;
+      }
+      #storiesparentnav {
+        z-index: 99999;
+        top: 0;
+        position: absolute;
+        display: flex;
+        width: 96%;
+        height: 5vh;
+  padding: 3vw;
+        align-items: center;
+        justify-content: space-between;
+      }
+      #storiesparentnav a {
+        text-decoration: none;
+      }
+      #storiesparentnav i {
+        font-size: 2.5vw;
+        color: white;
+      }
+      #storieschild,
+      #storieschild2 {
+        flex-shrink: 0;
+        position: relative;
+        /* overflow: hidden; */
+        width: 70vh;
+        height: 93vh;
+        color: white;
+      }
+      #storieschildnav {
+        z-index: 99;
+        height: 8vh;
+        width: 100%;
+        padding: 2vh 3vh;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        gap: 1vh;
+      }
+
+      #storieschildnavbar,
+      #bar-2 {
+        height: 4px;
+        transition: all linear 2s;
+        position: absolute;
+        top: 1vh;
+        left: 1vh;
+        background-color: #ffffff;
+        z-index: 999999;
+        width: 0%;
+      }
+      #storieschilddetails {
+        height: 5vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2vh;
+      }
+      #storieschilddetails img {
+        height: 5vh;
+        width: 5vh;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      #storieschilddetails h2 {
+        font-size: 1.5vw;
+        font-weight: 500;
+        margin-top: -5%;
+      }
+      #storydetails,
+      #storydetails2 {
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
+      #storydetails #storydate{
+        position: absolute;
+        top: 5.5%;
+        font-size: .8vw;
+        left: 20%;
+      }
+      #storydetails img,
+      #storydetails2 img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+      #storydetails video,
+      #storydetails2 video {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+      #storydetails h2,
+      #storydetails2 h2 {
+        top: 0;
+        font-size: 1.5vw;
+        font-weight: 400;
+        padding: 3vh;
+        color: white;
+        margin-top: 40vw;
+        position: absolute;
+        z-index: 999;
+        width: 25vw;
+        height: 18vh;
+       
+      }
+      #mainstoryparent {
+        height: 103vh;
+        position: relative;
+        display: flex;
+        overflow: hidden;
+        color: white;
+        width: 70vh;
+      }
+      .swiper {
+        width: 100%;
+        background-color: #1a1a1a;
+        height: 90%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .swiper-slide video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .swiper-button-next {
+        transform: translate(-25vw, 0);
+        color: white;
+      }
+      .swiper-button-prev {
+        transform: translate(25vw, 0);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="storiesparent">
+      <div id="storiesparentnav">
+        <a href="/status">  <i class="ri-arrow-left-s-line"></i></a>
+      
+        <a href="/status"><i class="ri-close-line"></i></a>
+      </div>
+      <div id="mainstoryparent">
+        <div id="storieschildnav">
+          <div id="storieschilddetails">
+            <div id="storieschildnavbar"></div>
+            <img src="../images/uploads/<%= user.image %> " alt="" />
+            <h2><%= user.username %></h2>
+          </div>
+        </div>
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <% userstory.forEach(function(story){ %>
+            <div class="swiper-slide">
+              <div id="storieschild">
+                <% if (story.storyimage) { %>
+                <div id="storydetails">
+                  <% const fileExtension =
+                  story.storyimage.split('.').pop().toLowerCase(); %> <% if
+                  (fileExtension === 'mp4' || fileExtension === 'mkv') { %>
+                    <h4 id="storydate"><%= new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric' }).format(new Date(story.date)) %></h4>
+                  <video
+                    src="../images/uploads/<%= story.storyimage %>"
+                 
+                    autoplay
+                  controls
+                 
+                  ></video>
+                  <% } else { %>
+                    <h4  id="storydate"><%= new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric' }).format(new Date(story.date)) %></h4>
+                  <img
+                    src="../images/uploads/<%= story.storyimage %>"
+                    alt=""
+                  />
+                  <% } %>
+                  <h2><%= story.data %></h2>
+                </div>
+                <% } else { %>
+                <div id="storydetails">
+                    <h2><%= story.data %></h2>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <%})%>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+      integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+
+
+      var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 0,
+        centeredSlides: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        on: {
+          slideChangeTransitionEnd: function () {
+            var currentSlide = swiper.slides[swiper.activeIndex];
+
+            // Check if the current slide contains a video
+            var videoElement = currentSlide.querySelector("video");
+
+            if (videoElement) {
+              // Pause the Swiper autoplay when video starts playing
+              swiper.autoplay.stop();
+
+              // Play the video
+              videoElement.play();
+
+              // Listen for the video to end
+              videoElement.addEventListener("ended", function () {
+                // Resume Swiper autoplay once the video is completed
+                swiper.autoplay.start();
+
+                // Check if it is the last slide
+                if (swiper.isEnd) {
+                  // Use setTimeout within the slideChangeTransitionEnd event to delay the click
+                  setTimeout(function () {
+                    var closeButton = document.querySelector(".ri-arrow-left-s-line");
+                    if (closeButton) {
+                      console.log("click")
+                      closeButton.click();
+                    }
+                  }, 5000); // 3 seconds delay
+                }
+              });
+            } else {
+              // If there is no video, check if it is the last slide
+              if (swiper.isEnd) {
+                // Use setTimeout within the slideChangeTransitionEnd event to delay the click
+                setTimeout(function () {
+                  var closeButton = document.querySelector(".ri-arrow-left-s-line");
+                  if (closeButton) {
+                    closeButton.click();
+                  }
+                }, 5000); // 3 seconds delay
+              }
+            }
+
+            var widthPercentage =
+              (swiper.activeIndex / (swiper.slides.length - 1)) * 100;
+            var navbar = document.getElementById("storieschildnavbar");
+            navbar.style.width = widthPercentage + "%";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

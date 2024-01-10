@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="main">
+    
+    <div class="pg">
+<div class="left">
+  <div style="height: 8vw;" class="nav">
+  
+    <div class="nav1">
+       <a style="text-decoration:none;" href="/"><i  class="ri-arrow-left-line"></i></a> 
+        <h2>New Chat</h2>
+        <!-- <%if(typeof message !== "undefined"){%>
+          <p style="color: green;"><%= message%></p>
+        <%}%> -->
+    </div>
+  
+  </div>
+  <div class="ser">
+    <input type="text" placeholder="Search">
+  </div>
+  <div class="nav4">
+    <!-- <form class="form2" action="/group"  method="post">
+      <h2>Create Group</h2>
+        <input type="text"  name="groupName" placeholder="Enter Group Name"  >
+        <input type="number" name="limit"  min="1"placeholder="Enter limit">
+        <button type="submit">Create</button>
+    </form> -->
+      <a style="text-decoration: none; color:white" href="/createGroup">  <div  class="chatbox2 ">
+           <div class="icon2">
+            <i class="ri-group-fill"></i>
+           </div> 
+         <h3>New Group</h3>
+     </div> </a>
+     <hr>
+     <% groupData.forEach(function(group){ %>
+     <a style="text-decoration: none; color:white" href="">  <div  class="chatbox3 ">
+       <div class="head5">
+      <div class="icon2">
+   <img src="/images/uploads/<%= group.image %>" alt="">
+      </div> 
+
+        <h3><%= group.groupName %></h3>
+      </div>
+    <div class="icon3">
+   <a><i   data-id="<%= group._id%>" data-limit="<%= group.limit %>" class="ri-add-fill addMember"></i></a> 
+    </div>
+</div> </a>
+<% }) %>
+  
+<form action="" id="add-member-form">
+  <div class="modal-body">
+      
+      <input type="hidden" name="group_id" id="group_id">
+      <input type="hidden" name="limit" id="limit">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <div class="addMemberTable">
+                <table class="table addMembersInTable">
+                  
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+  </div>
+  <div class="modal-footer">
+  <p id="add-member-error"></p>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+  <button type="submit" class="btn btn-primary">Update Member</button>
+  </div>
+</form>
+   
+</div>
+</div>
+      <div class="right">
+        <img src="/images/gpgUENjXYbNQRKZciejivU-removebg-preview.png" alt="">
+        <h1>Download WhatsApp For Windows</h1>
+        <p>Make calls, share your screen and get a faster experience when you download the <br> Windows app</p>
+        <button style="background-color: #00A884; border:none; width:8vw;">Get app</button>
+      </div>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="/javascripts/script.js"></script>
+  <!-- <script>
+    var flag = 0
+    document.querySelector("#add-member-form")
+    .addEventListener("click",function(){
+  console.log("helloo")
+  if(flag == 0){
+    document.querySelector("#add-member-form").style.display="flex";
+    flag=1
+}else{
+    flag=0
+    document.querySelector(".form2").style.display="none";
+}
+ 
+    });
+  </script> -->
+   <script>
+  /*  document.querySelectorAll(".addMember").forEach(function(item){
+      
+  item.addEventListener("click",function(e){
+ e.preventDefault()
+    console.log(e.target)
+   })
+})*/
+$('.addMember').click(function(e){
+
+ document.querySelector("#add-member-form").style.display="flex";
+	console.log("hello")
+  var id = $(this).attr('data-id');
+  var limit = $(this).attr('data-limit');
+  $('#group_id').val(id);
+  $('#limit').val(limit);
+
+
+  $.ajax({
+		url:'/get-members',
+		type:'POST',
+		data:{ group_id:id },
+		success:function(res){
+			if(res.success ==  true){
+				let users = res.data;
+        console.log(users)	
+			}
+			else{
+				alert(res.msg);
+			}
+		}
+	});
+
+});
+   </script>
+</body>
+
+
+</html>
