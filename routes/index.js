@@ -21,7 +21,7 @@ require("dotenv").config();
 passport.use(new localStrategy(users.authenticate()));
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/whatsaapp")
+  .connect(process.env.Mongo)
   .then(() => {
     console.log("connected to db");
   })
@@ -177,7 +177,7 @@ router.get("/stories/:id", isLoggedIn, function (req, res, next) {
       const userstory = user.stories;
       // userstory.views.push(onlyuser_id)
       // userstory.save()
-      console.log(userstory[0])
+      // console.log(userstory[0])
       if (!userstory || userstory.length === 0) {
         return res.status(404).send("User has no recent stories");
       }
