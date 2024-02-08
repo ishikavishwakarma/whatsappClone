@@ -21,7 +21,7 @@ require("dotenv").config();
 passport.use(new localStrategy(users.authenticate()));
 
 mongoose
-  .connect(process.env.Mongo)
+  .connect(process.env.MONGO)
   .then(() => {
     console.log("connected to db");
   })
