@@ -24,7 +24,7 @@ app.use(
     saveUninitialized: false,
     secret: "whatsaap",
     store:MongoStore.create({
-      mongoUrl:"mongo",
+      mongoUrl:process.env.MONGO,
       autoRemove:"disabled",
       ttl: 1* 60 * 60
     })
