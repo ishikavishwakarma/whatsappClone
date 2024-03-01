@@ -8,7 +8,7 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 var expressSession = require("express-session");
 const bodyParser = require("body-parser")
-
+require("dotenv").config();
 var indexRouter = require("./routes/index");
 var usersRouter = require("./models/userModel");
 
@@ -24,7 +24,7 @@ app.use(
     saveUninitialized: false,
     secret: "whatsaap",
     store:MongoStore.create({
-      mongoUrl:"mongodb://127.0.0.1:27017/whatsaapp",
+      mongoUrl:process.env.MONGO,
       autoRemove:"disabled",
       ttl: 1* 60 * 60
     })
